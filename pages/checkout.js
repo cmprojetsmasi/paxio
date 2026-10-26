@@ -8,7 +8,11 @@ export default function Checkout() {
   
   const livreTitre = titre || "Forfait Premium PaXio";
   const livrePrix = prix || "5.00 $";
-  const numeroWhatsApp = "243999024287";
+  const numeroWhatsApp = "243999024287"; // ton WhatsApp
+  const mesNumeros = {
+    airtel: "0999024287", // <-- METS TON NUMERO AIRTEL ICI
+    mpesa: "0812826017", // <-- METS TON NUMERO M-PESA ICI
+  }
 
   const payer = () => {
     const message = `Bonjour PaXio 👋, je veux payer ${livrePrix} pour "${livreTitre}" via ${method.toUpperCase()}.`;
