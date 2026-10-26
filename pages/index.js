@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 40, textAlign: 'center' }}>
@@ -7,9 +9,11 @@ export default function Home() {
         La premiere plateforme de livres numeriques en RDC.
       </p>
       <div style={{ marginTop: 40 }}>
-        <button style={{ padding: '15px 30px', background: '#000', color: '#fff', borderRadius: 10, fontSize: 18, border: 'none' }}>
-          Explorer les livres
-        </button>
+        <Link href="/livres">
+          <button style={{ padding: '15px 30px', background: '#000', color: '#fff', borderRadius: 10, fontSize: 18, border: 'none' }}>
+            Explorer les livres
+          </button>
+        </Link>
       </div>
     </div>
   );
