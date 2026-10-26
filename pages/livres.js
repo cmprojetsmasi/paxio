@@ -1,5 +1,5 @@
 export default function Livres() {
-  const numeroWhatsApp = "243810000000"; // <-- REMPLACE PAR TON NUMERO SANS LE +
+  const numeroWhatsApp = "243999024287"; // <-- REMPLACE PAR TON NUMERO SANS LE +
 
   const acheter = (titre, prix) => {
     const message = `Bonjour PaXio 👋, je veux acheter le livre "${titre}" à ${prix}. Comment payer ?`;
