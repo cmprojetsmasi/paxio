@@ -1,97 +1,73 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react'
 
 export default function Home() {
-  const router = useRouter();
-  const [search, setSearch] = useState("");
+  const [livres, setLivres] = useState([])
+  const [search, setSearch] = useState("")
 
-  const livreVedette = {
-    titre: "Micro-SaaS et Solopreneuriat Tech",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500",
-    note: "4,8",
-    avis: "189 avis",
-    categories: "Entrepreneur • Tech • Business",
-    description: "Le guide complet pour créer et faire croître un Micro-SaaS rentable en tant que solopreneur. Stratégies pratiques, outils no-code/low-code, acquisition de clients et automatisation.",
-    prixUSD: "$9,99",
-    prixCDF: "28 970 CDF",
-  };
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem('paxio_livres') || '[]')
+    setLivres(saved)
+  }, [])
 
-  const acheter = () => {
-    router.push(`/checkout?titre=${encodeURIComponent(livreVedette.titre)}&prix=${livreVedette.prixUSD}`);
-  };
+  const filtres = livres.filter(l => 
+    l.titre.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
-    <div style={{ fontFamily: 'Inter, sans-serif', background: '#0F1015', minHeight: '100vh', color: '#fff', width: '100%', overflowX: 'hidden' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        @media (max-width: 768px) {
-          .header-nav { display: none !important; }
-          .vedette-card { flex-direction: column !important; }
-          .vedette-cover { max-width: 100% !important; min-width: 100% !important; }
-          .action-buttons { flex-direction: column !important; }
-        }
-      `}</style>
-
+    <div style={{padding:'20px', maxWidth:'600px', margin:'0 auto', fontFamily:'sans-serif', background:'#000', color:'#fff', minHeight:'100vh'}}>
+      
       {/* HEADER */}
-      <header style={{ background: '#151821', padding: '15px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #232631', width: '100%' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: -1 }}>
-            <span style={{ color: '#FF8A24' }}>◆</span>Pa<span style={{ color: '#FF8A24' }}>X</span>io
-          </div>
-          <nav className="header-nav" style={{ display: 'flex', gap: 6 }}>
-            <button style={{ background: '#FF8A24', color: '#fff', border: 'none', padding: '7px 14px', borderRadius: 8, fontWeight: 700, fontSize: 13 }}>Ebooks</button>
-            <button style={{ background: '#3A3D4A', color: '#A0A3B1', border: 'none', padding: '7px 14px', borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Journaux</button>
-            <button style={{ background: '#3A3D4A', color: '#A0A3B1', border: 'none', padding: '7px 14px', borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Livres</button>
-            <button style={{ background: '#3A3D4A', color: '#A0A3B1', border: 'none', padding: '7px 14px', borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Annonces</button>
-          </nav>
-        </div>
-        <div style={{ display: 'flex', gap: 15, alignItems: 'center', fontSize: 20 }}>
-          <span>♡</span>
-          <span>🛒</span>
-        </div>
-      </header>
+      <h1 style={{textAlign:'center', margin:'0', letterSpacing:'2px'}}>📚 PAXIO</h1>
+      <p style={{textAlign:'center', color:'#aaa', marginTop:'5px'}}>Achetez. Payez. Accédez.</p>
 
-      <div style={{ padding: '16px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
-        {/* SEARCH */}
-        <div style={{ background: '#1E212E', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, border: '1px solid #2A2E3E', width: '100%' }}>
-          <span style={{ color: '#FF8A24', fontSize: 20 }}>⌕</span>
-          <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Rechercher un ebook, journal, livre, annonce..." style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', width: '100%', fontSize: 15 }} />
-        </div>
-
-        {/* VEDETTE */}
-        <div style={{ marginTop: 24 }}>
-          <h1 style={{ fontSize: 24, fontWeight: 800 }}>En vedette cette semaine</h1>
-          <p style={{ color: '#9CA0B0', marginTop: 6, fontSize: 13 }}>Découvrez notre sélection mise en avant pour les entrepreneurs et créateurs.</p>
-
-          <div className="vedette-card" style={{ background: '#1A1D28', borderRadius: 16, marginTop: 16, padding: 16, border: '1px solid #2A2E3E', display: 'flex', gap: 20, width: '100%' }}>
-            <div className="vedette-cover" style={{ minWidth: 180, maxWidth: 220 }}>
-              <img src={livreVedette.image} style={{ width: '100%', borderRadius: 10, border: '1px solid #2A2E3E' }} />
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <h2 style={{ fontSize: 20, fontWeight: 800 }}>{livreVedette.titre}</h2>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 12, color: '#D1D3DB' }}>
-                <span style={{ color: '#FFB800' }}>★★★★★</span> {livreVedette.note} · {livreVedette.avis} · {livreVedette.categories}
-              </div>
-              <p style={{ color: '#C2C5D1', fontSize: 13, lineHeight: 1.5, marginTop: 12 }}>{livreVedette.description}</p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 16 }}>
-                <div style={{ fontSize: 32, fontWeight: 900 }}>{livreVedette.prixUSD}</div>
-                <div style={{ color: '#FF8A24', fontWeight: 700, fontSize: 16 }}>{livreVedette.prixCDF}</div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 12, color: '#A3E3A3' }}>
-                ✓ Téléchargement instantané • PDF, ePub, Kindle
-              </div>
-              <div className="action-buttons" style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-                <button onClick={acheter} style={{ background: '#FF8A24', color: '#000', border: 'none', padding: '12px 18px', borderRadius: 8, fontWeight: 800, cursor: 'pointer', flex: 1 }}>Acheter maintenant 🛒</button>
-                <button style={{ background: 'transparent', color: '#FF8A24', border: '1px solid #FF8A24', padding: '12px 18px', borderRadius: 8, fontWeight: 700, flex: 1 }}>⬇ Téléchargement</button>
-              </div>
-              <div style={{ marginTop: 12, fontSize: 11, color: '#8A8E9E' }}>🛡 Accès immédiat • Mise à jour gratuite</div>
-              <div style={{ marginTop: 8, fontSize: 11, color: '#8A8E9E' }}>Paiement sécurisé • Support 24/7 • Remboursé 7 jours</div>
-            </div>
-          </div>
-        </div>
+      {/* CHAMP DE RECHERCHE ACTIVÉ */}
+      <div style={{position:'relative', margin:'25px 0'}}>
+        <input 
+          value={search}
+          onChange={e=>setSearch(e.target.value)}
+          placeholder="🔍 Rechercher... ex: SaaS, Tech, Business"
+          style={{
+            width:'100%', 
+            padding:'16px 16px 16px 45px', 
+            borderRadius:'14px', 
+            border:'2px solid #333', 
+            background:'#111',
+            color:'white',
+            fontSize:'16px',
+            outline:'none'
+          }}
+        />
+        <span style={{position:'absolute', left:'15px', top:'17px', fontSize:'18px'}}>🔍</span>
+        {search && (
+          <button onClick={()=>setSearch("")} style={{position:'absolute', right:'12px', top:'12px', background:'#333', color:'white', border:'none', borderRadius:'50%', width:'30px', height:'30px'}}>X</button>
+        )}
       </div>
+      
+      <p style={{color:'#666', fontSize:'13px', marginTop:'-15px', marginBottom:'20px'}}>
+        {search ? `${filtres.length} résultat(s) pour "${search}"` : `${livres.length} livre(s) disponible(s)`}
+      </p>
+
+      {/* VITRINE */}
+      {filtres.length === 0 ? (
+        <div style={{textAlign:'center', marginTop:'50px', color:'#666'}}>
+          <p style={{fontSize:'50px'}}>🔍</p>
+          <p>{search ? `Aucun livre trouvé pour "${search}"` : "Aucun livre encore"}</p>
+          <a href="/admin" style={{color:'#0f0'}}>Ajouter un livre sur /admin</a>
+        </div>
+      ) : (
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'15px'}}>
+          {filtres.map((l,i)=>(
+            <div key={i} style={{background:'#111', borderRadius:'16px', padding:'10px', border:'1px solid #333'}}>
+              <img src={l.couverture} style={{width:'100%', height:'200px', objectFit:'cover', borderRadius:'12px'}}/>
+              <h3 style={{fontSize:'14px', margin:'10px 0 5px', height:'38px', overflow:'hidden'}}>{l.titre}</h3>
+              <p style={{fontWeight:'bold', color:'#0f0', margin:'5px 0'}}>{l.prix || '5$'}</p>
+              <a href={l.pdf} download style={{display:'block', background:'white', color:'black', padding:'10px', borderRadius:'8px', fontWeight:'bold', textAlign:'center', textDecoration:'none'}}>📥 Voir le livre</a>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <a href="/admin" style={{display:'block', marginTop:'40px', textAlign:'center', color:'#555', textDecoration:'none'}}>⚙️ Aller à Admin</a>
     </div>
-  );
-        }
+  )
+            }
