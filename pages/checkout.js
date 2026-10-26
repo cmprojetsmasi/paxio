@@ -15,7 +15,10 @@ export default function Checkout() {
   }
 
   const payer = () => {
-    const message = `Bonjour PaXio 👋, je veux payer ${livrePrix} pour "${livreTitre}" via ${method.toUpperCase()}.`;
+    if (method === 'airtel' || method === 'mpesa') {
+      alert(`Merci ! Envoie ${livrePrix} sur ${method === 'airtel' ? mesNumeros.airtel : mesNumeros.mpesa} - ${method.toUpperCase()} au nom de PaXio. Ensuite envoie la capture sur WhatsApp pour recevoir "${livreTitre}" instantanément.`);
+    }
+    const message = `Bonjour PaXio 👋, j'ai payé ${livrePrix} pour "${livreTitre}" via ${method.toUpperCase()}. Voici la preuve :`;
     window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
